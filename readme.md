@@ -1,8 +1,11 @@
 # Image Gallery Reloaded
 
 Contributors: DanielSachs
+
 WordPress version at least: 3.2
+
 Tested up to: 3.5.1
+
 Stable tag: 2.1.5
 
 *** 
