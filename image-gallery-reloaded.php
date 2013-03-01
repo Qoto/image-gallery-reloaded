@@ -3,7 +3,7 @@
 Plugin Name: Image Gallery Reloaded
 Plugin URI: http://18elements.com/tools/wordpress-image-gallery-reloaded
 Description: The plugin replaces the default Wordpress gallery with full featured, jquery-powered Galleria.
-Version: 2.1.4
+Version: 2.1.5
 Author: Daniel Sachs
 Author URI: http://18elements.com
 License: GPL
@@ -122,110 +122,7 @@ function igr_get_gallery_images( $args = array() )
 		return $image;
 }
 
-/**
- * Addidng gallery select checkboxes
- */
-add_action( 'admin_head-media-upload-popup', 'wpse_53803_script_enqueuer' );
 
-function wpse_53803_script_enqueuer() 
-{
-    if( $_GET['tab'] == 'gallery' || $_GET['tab'] == 'library' ) 
-    {
-        ?>
-		<script type="text/javascript">
-		jQuery(document).ready(function(){
-	
-			// Run only if we have images to display
-			if (jQuery('#media-items > *').length == 0) 
-				return;
-
-			var $include = '', $is_update = false, $is_checked;
-			
-			// Add Gallery include All or None, for easier selection
-			jQuery('th.actions-head').before('<th style="width:15%;">Gallery</th>');
-			jQuery('#sort-buttons').prepend('Include in gallery: <a id="gallery-include-all" href="#">All</a> | <a id="gallery-include-none" style="margin-right:2em;" href="#">None</a>');
-			jQuery('#gallery-include-all').click(function() {
-				jQuery('#media-items input[type=checkbox]').each(function() {
-					jQuery(this).attr('checked', 'checked');
-				});		
-			});
-			jQuery('#gallery-include-none').click(function() {
-				jQuery('#media-items input[type=checkbox]').each(function() {
-					jQuery(this).removeAttr('checked');
-				});
-			});
-			
-			// Select parent editor, read existing gallery data	
-			w = wpgallery.getWin();
-			editor = w.tinymce.EditorManager.activeEditor;
-
-			if (editor !== null) {
-				gal = editor.selection.getNode();
-			
-				if (editor.dom.hasClass(gal, 'wpGallery')) {
-					$include = editor.dom.getAttrib(gal, 'title').match(/include=['"]([^'"]+)['"]/i);
-					var $is_update = true;
-					if ($include != null)
-						$include = $include[1];
-				} else {
-					jQuery('#insert-gallery').show();
-					jQuery('#update-gallery').hide();
-				}
-			}
-			
-			// Check which images have been selected for inclusion
-			jQuery('#media-items .media-item').each(function($count) {
-				var $imgid = jQuery(this).attr('id').split('-')[2];
-				if ($include != null && $include.indexOf($imgid) != -1)
-					$is_checked = ' checked="checked" ';
-				else
-					$is_checked = '';	
-				jQuery('.menu_order', this).append(' <label class="include-in-gallery"><input type="checkbox" title="Include image in this gallery" id="include-in-gallery-'+$imgid+'" '+$is_checked+' value="" />  Include </label>');
-			});		
-			
-			jQuery('#insert-gallery').attr('onmousedown', '');
-			
-			// Insert or update the actual shortcode
-			jQuery('#update-gallery, #insert-gallery, #save-all').mousedown(function() {
-				var $to_include = '';
-				if (editor !== null)
-					var orig_gallery = editor.dom.decode(editor.dom.getAttrib(gal, 'title'));
-				else
-					var orig_gallery = '';
-
-				// Check which images have been selected to be included
-				jQuery('#media-items .media-item').each(function($count) {
-					$imgid = jQuery(this).attr('id').split('-')[2];
-					
-					if (jQuery('#include-in-gallery-'+$imgid+':checked', this).val() != null)
-						$to_include += $imgid + ', ';
-				});
-				
-				if ($to_include.length > 2) {
-					$to_include = $to_include.substr(0, $to_include.length - 2); // remove the last comma
-					$to_include = ' include="' + $to_include + '" ';
-				}
-				
-				if (jQuery(this).attr('id') == 'insert-gallery') {
-					w.send_to_editor('[gallery' + wpgallery.getSettings() + $to_include + ']');
-				}
-				
-				// Update existing shortcode
-				if ($is_update) {
-					if ($to_include != '' && orig_gallery.indexOf(' include=') == -1)
-						editor.dom.setAttrib(gal, 'title', orig_gallery + $to_include);
-					else if (orig_gallery.indexOf(' include=') != -1)
-						editor.dom.setAttrib(gal, 'title', orig_gallery.replace(/include=['"]([^'"]+)['"]/i, $to_include));
-					else
-						editor.dom.setAttrib(gal, 'title', orig_gallery.replace(/include=['"]([^'"]+)['"]/i, ''));
-				}
-			});
-
-		});
-		</script>
-        <?php
-    }
-}
 
 
 function igr_gallery_shortcode($attr)
@@ -254,12 +151,13 @@ function igr_gallery_shortcode($attr)
     $count = 1;
 	$id = intval($id);
 	
-	if ($options['disableSelective'] != "true") {
-		if ( !empty($include) )
-		{
+	/*if ($options['disableSelective'] != "true") {*/
+		
 			$include = preg_replace( '/[^0-9,]+/', '', $include );
+			$ids = preg_replace( '/[^0-9,]+/', '', $ids );
 			$_attachments = get_posts( array(
 											'include'			=> $include,
+											'ids'				=> $ids,
 											'post_parent'		=> $id,
 											'post_type'			=> 'attachment',
 											'post_mime_type'	=> 'image',
@@ -272,12 +170,8 @@ function igr_gallery_shortcode($attr)
 				$attachments[$val->ID] = $_attachments[$key];
 			}
 			
-			
-		} 
-		else 
-		{
-			return '<div style="padding:5px; background-color:red; color:white;"> No Images where included in this gallery </div>';
-		}
+	
+	/*
 	}
 	else
 	{
@@ -289,6 +183,7 @@ function igr_gallery_shortcode($attr)
 										)
 								  );
 	}
+	*/
 	
 	
 	
@@ -688,8 +583,6 @@ function igr_render_form()
                         <label><input type="hidden" name="igr_options[showCaption]" value="false" /> <input name="igr_options[showCaption]" type="checkbox" value="true" <?php if (isset($options['showCaption'])) { checked('true', $options['showCaption']); } ?> />  Show Image Info: Title and Description </label><br />
                         
                         <label><input type="hidden" name="igr_options[showCaptionToggle]" value="false" /> <input name="igr_options[showCaptionToggle]" type="checkbox" value="true" <?php if (isset($options['showCaptionToggle'])) { checked('true', $options['showCaptionToggle']); } ?> />  Use Image Info toggle button</label><br />
-                        
-                        <label><input type="hidden" name="igr_options[disableSelective]" value="false" /> <input name="igr_options[disableSelective]" type="checkbox" value="true" <?php if (isset($options['disableSelective'])) { checked('true', $options['disableSelective']); } ?> />  <strong>Disable selective gallery.</strong> Show all images in all galleries, regardless the selected images in posts</label><br />
                         
 					</td>
 				</tr>

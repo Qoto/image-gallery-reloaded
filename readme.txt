@@ -3,8 +3,8 @@
 Contributors: DanielSachs
 Tags: gallery, default gallery, replacement, galleria, colorpicker, images, image, image gallery
 Requires at least: 3.2
-Tested up to: 3.4.2
-Stable tag: 2.1.4
+Tested up to: 3.5.1
+Stable tag: 2.1.5
 
 Replaces the default Wordpress gallery with a featured slideshow.
 
@@ -12,7 +12,6 @@ Replaces the default Wordpress gallery with a featured slideshow.
 
 **A jQuery based Image Gallery Reloaded plugin replaces the default Wordpress gallery with a highly customizable slideshow and gallery.**
 
-*   Selective Gallery - include selected images only
 *   Set gallery images and thumbnail sizes
 *   Customize gallery design to fit your Theme
 *   Set transition effects
@@ -23,7 +22,6 @@ Replaces the default Wordpress gallery with a featured slideshow.
 *   Extensive settings
 *   Based on the default WordPress gallery
 
-**UPGRADE NOTICE:** Upgrading from versions prior to 2.1.2, please visit your gallery pages and select the images you want to display in a gallery:
 
 1.   Go to your post and click the "Edit Gallery" button.
 2.   At the top of the popup click "Include in Gallery: All" or select individual images
@@ -78,6 +76,13 @@ The gallery displays only selected images. This feature allows you to keep some 
 
 
 == Changelog ==
+
+**2.1.5**
+
+* [NEW]	WP 3.5+ support
+
+**Important: Since WP has integrated the new Media library interface, which allows to select the displayeed images, the selective Gallery feature has been dropped.**
+
 **2.1.4**
 
 * [NEW]	Mouseover effect on thumbnail to load the main image
