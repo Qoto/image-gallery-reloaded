@@ -31,7 +31,7 @@ Replaces the default Wordpress gallery with a featured slideshow.
 
 To see Image Gallery Reloaded (IGR) in action visit : [18elements website](http://18elements.com/tools/wordpress-image-gallery-reloaded)
 
-
+Interested in contributing? Fork it on [GitHub](https://github.com/DanielSachs/image-gallery-reloaded)
 
 
 
