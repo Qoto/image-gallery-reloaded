@@ -145,46 +145,50 @@ function igr_gallery_shortcode($attr)
 		'captiontag'	=> 'dd',
 		'columns'		=> 3,
 		'size'			=> 'thumbnail',
-		'include'		=> ''
+		'include'		=> '',
+		'ids'			=> ''
 	), $attr));
 
     $count = 1;
 	$id = intval($id);
 	
-	/*if ($options['disableSelective'] != "true") {*/
-		
-			$include = preg_replace( '/[^0-9,]+/', '', $include );
-			$ids = preg_replace( '/[^0-9,]+/', '', $ids );
-			$_attachments = get_posts( array(
-											'include'			=> $include,
-											'ids'				=> $ids,
-											'post_parent'		=> $id,
-											'post_type'			=> 'attachment',
-											'post_mime_type'	=> 'image',
-											'orderby'			=> $orderby
-											)
-									  );
-			$attachments = array();
-			foreach ( $_attachments as $key => $val )
-			{
-				$attachments[$val->ID] = $_attachments[$key];
-			}
-			
-	
-	/*
-	}
-	else
+	if(!empty($ids))
 	{
-		$attachments = get_children( array(
+		$ids = preg_replace( '/[^0-9,]+/', '', $ids );
+		$_attachments = get_posts( array(
+										'include'			=> $ids,
+										'post_type'			=> 'attachment',
+										'post_mime_type'	=> 'image',
+										'orderby'			=> $orderby
+										)
+								  );
+		$attachments = array();
+		foreach ( $_attachments as $key => $val )
+		{
+			$attachments[$val->ID] = $_attachments[$key];
+		}
+	}
+	else 
+	{
+		$include = preg_replace( '/[^0-9,]+/', '', $include );
+		
+		$_attachments = get_posts( array(
+										'include'			=> $include,
 										'post_parent'		=> $id,
 										'post_type'			=> 'attachment',
 										'post_mime_type'	=> 'image',
 										'orderby'			=> $orderby
 										)
 								  );
+		$attachments = array();
+		foreach ( $_attachments as $key => $val )
+		{
+			$attachments[$val->ID] = $_attachments[$key];
+		}
 	}
-	*/
 	
+
+
 	
 	
 	if ( is_feed() )
@@ -194,6 +198,7 @@ function igr_gallery_shortcode($attr)
 			$output .= wp_get_attachment_link($id, $size, true) . "\n";
 		return $output;
 	}
+
 	$listtag = tag_escape($listtag);
 	$itemtag = tag_escape($itemtag);
 	$captiontag = tag_escape($captiontag);
@@ -209,8 +214,8 @@ function igr_gallery_shortcode($attr)
 		$att_page = get_attachment_link($id);
 		$img = wp_get_attachment_image_src($id, $size);
 		$img = $img[0];
-		$desc = $attachment->post_content;
-		$title = $attachment->post_excerpt;
+		$desc = $attachment -> post_content;
+		$title = $attachment -> post_excerpt;
 		if($title == '') $title = $attachment->post_title;
 		
 		
