@@ -4,7 +4,7 @@ Contributors: DanielSachs
 Tags: gallery, default gallery, replacement, galleria, colorpicker, images, image, image gallery
 Requires at least: 3.2
 Tested up to: 3.5.1
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 
 Replaces the default Wordpress gallery with a featured slideshow.
 
@@ -76,6 +76,10 @@ The gallery displays only selected images. This feature allows you to keep some 
 
 
 == Changelog ==
+
+**2.1.6**
+
+* [NEW] Multiple galleries on page
 
 **2.1.5**
 

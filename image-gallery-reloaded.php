@@ -3,7 +3,7 @@
 Plugin Name: Image Gallery Reloaded
 Plugin URI: http://18elements.com/tools/wordpress-image-gallery-reloaded
 Description: The plugin replaces the default Wordpress gallery with full featured, jquery-powered Galleria.
-Version: 2.1.5
+Version: 2.1.6
 Author: Daniel Sachs
 Author URI: http://18elements.com
 License: GPL
@@ -208,7 +208,7 @@ function igr_gallery_shortcode($attr)
 	$theme = $options['igr_main_theme'];
 	
 	$output = apply_filters('gallery_style', '<div class="gallery">');
-	$output .= '<div id="galleria">';
+	$output .= '<div class="galleria">';
 	foreach ( $attachments as $id => $attachment ) {
 		$a_img = wp_get_attachment_url($id);
 		$att_page = get_attachment_link($id);
@@ -229,7 +229,7 @@ function igr_gallery_shortcode($attr)
     $output .= '</div></div>';
 	
 	$output .= "<script type='text/javascript'>Galleria.loadTheme('" . plugins_url('/image-gallery-reloaded/themes/'. $theme . '/galleria.theme.min.js') . "');</script>";
-	$output .= "<script type='text/javascript'>Galleria.run('#galleria');</script>";
+	$output .= "<script type='text/javascript'>Galleria.run('.galleria');</script>";
 	return $output;
 }
 remove_shortcode('gallery');

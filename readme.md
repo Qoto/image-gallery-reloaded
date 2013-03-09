@@ -2,11 +2,11 @@
 
 Contributors: DanielSachs
 
-WordPress version at least: 3.2
+WordPress version (at least): 3.2
 
 Tested up to: 3.5.1
 
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 
 *** 
 
@@ -78,6 +78,10 @@ The gallery displays only selected images. This feature allows you to keep some 
 
 
 ##Changelog
+
+**2.1.6**
+
+[NEW] Multiple galleries on page
 
 **2.1.5**
 
