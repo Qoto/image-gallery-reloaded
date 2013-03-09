@@ -2,7 +2,7 @@
 $options = get_option('igr_options');
 ?>
 <style type="text/css" media="screen" rel="stylesheet">
-	#galleria
+	.galleria
 	{
 		height:<?php echo $options['total_height']; ?>px;
 	}
