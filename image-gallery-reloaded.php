@@ -155,13 +155,12 @@ function igr_gallery_shortcode($attr)
 	if(!empty($ids))
 	{
 		$ids = preg_replace( '/[^0-9,]+/', '', $ids );
-		$_attachments = get_posts( array(
-										'include'			=> $ids,
-										'post_type'			=> 'attachment',
-										'post_mime_type'	=> 'image',
-										'orderby'			=> $orderby
-										)
-								  );
+		$ids_array = explode(',', $ids);
+
+		$_attachments = array();
+		foreach ( $ids_array as $get_this_id ) {
+			$_attachments[] = get_post($get_this_id);
+		}
 		$attachments = array();
 		foreach ( $_attachments as $key => $val )
 		{
